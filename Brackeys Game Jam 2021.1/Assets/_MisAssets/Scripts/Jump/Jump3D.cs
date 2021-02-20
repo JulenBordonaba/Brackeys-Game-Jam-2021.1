@@ -249,13 +249,13 @@ public class Jump3D : Mechanic
         {
             if (IsFalling)
             {
-                return jumpData.FallGravity; ;
+                return jumpData.FallGravity; 
             }
             else
             {
                 if (JumpInputPressed)
                 {
-                    return jumpData.BaseGravity; ;
+                    return jumpData.BaseGravity; 
                 }
                 else
                 {

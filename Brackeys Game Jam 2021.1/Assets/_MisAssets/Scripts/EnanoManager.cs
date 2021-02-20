@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnanoManager : Singleton<EnanoManager>
 {
+    public float throwForceVelocity = 5f;
+
     public List<Enano> enanos = new List<Enano>();
 
     public KeyCode joinKey;
@@ -14,6 +16,7 @@ public class EnanoManager : Singleton<EnanoManager>
 
     private PlayerDirection direction = PlayerDirection.none;
 
+    private Plane plane;
 
     public List<Enano> nearEnanos = new List<Enano>();
 
@@ -24,6 +27,7 @@ public class EnanoManager : Singleton<EnanoManager>
     {
         base.Awake();
         rb = GetComponent<Rigidbody>();
+        plane = new Plane();
     }
     
     private void Update()
@@ -54,6 +58,19 @@ public class EnanoManager : Singleton<EnanoManager>
                 Join();
             }
         }
+
+    }
+
+    private void ManageThrowInput()
+    {
+        if(Input.GetMouseButtonDown(0))
+        {
+            ThrowEnano();
+        }
+    }
+
+    public void ThrowEnano()
+    {
 
     }
 

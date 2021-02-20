@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/_MisAssets/Scenes/Julen_Pruebas.unity
+- path: Assets/_MisAssets/Scenes/MainMenu.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0

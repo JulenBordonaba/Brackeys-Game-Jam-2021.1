@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 616442693576cb34798f190bd72a52e6, type: 3}
+  m_Name: SoloDwarf_Movement
+  m_EditorClassIdentifier: 
+  maxVelocity: 8
+  accelerationTime: 0.2
+  decelerationTime: 0.2
+  accelerationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 1.2061981
+      outSlope: 1.2061981
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.098360665
+    - serializedVersion: 3
+      time: 0.5
+      value: 8
+      inSlope: 0.02059613
+      outSlope: 0.02059613
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.09631142
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  decelerationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 8
+      inSlope: 0.54233754
+      outSlope: 0.54233754
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.12526397
+    - serializedVersion: 3
+      time: 0.5
+      value: 0
+      inSlope: 0.0136684785
+      outSlope: 0.0136684785
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.5056708
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

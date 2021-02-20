@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f8c1a391810f8540975162cd6896b38, type: 3}
+  m_Name: JumpStore
+  m_EditorClassIdentifier: 
+  jumps:
+  - {fileID: 11400000, guid: 0df092a7267de4548a3423acbd88dec5, type: 2}
+  - {fileID: 11400000, guid: f0dca3fbd6dcbb14e82ee52bb229f1d8, type: 2}
+  - {fileID: 11400000, guid: 352fb22cdc87a8e43bc91b4e9d54da26, type: 2}
+  - {fileID: 11400000, guid: 24f94e12a3e621e44bf345199398f4cf, type: 2}

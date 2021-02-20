@@ -6,16 +6,31 @@ public class Enano : MonoBehaviour
 {
     public RigidBodyData rbData;
 
+    public Collider mainCollider;
+
+    public PhysicMaterial playerPhysicMaterial;
+    public PhysicMaterial objectPhysicMaterial;
+
     public GameObject triggers;
 
     private Rigidbody _rb;
 
+    public bool canKinematic = true;
 
     private void Awake()
     {
         rbData = new RigidBodyData();
         rb = GetComponent<Rigidbody>();
         rbData.SaveData(rb);
+    }
+
+    public IEnumerator KinematicCooldown(float t)
+    {
+        canKinematic = false;
+
+        yield return new WaitForSeconds(t);
+
+        canKinematic = true;
     }
 
     private void Update()
@@ -56,6 +71,22 @@ public class Enano : MonoBehaviour
         //{
         //    rb.isKinematic = IsAlone;
         //}
+
+        mainCollider.material = IsPlayer ? playerPhysicMaterial : objectPhysicMaterial;
+
+        if (canKinematic)
+        {
+            if (rb)
+            {
+                if(rb.velocity.magnitude <=0.01f)
+                {
+                    StartCoroutine(Kinematice());
+                }
+                
+            }
+        }
+
+
     }
 
     public void EnableRigidBody()
@@ -132,5 +163,23 @@ public class Enano : MonoBehaviour
         EnableRigidBody();
     }
 
-    
+    private void OnCollisionEnter(Collision collision)
+    {
+        //if (canKinematic)
+        //{
+        //    if (rb)
+        //    {
+        //        StartCoroutine(Kinematice());
+        //    }
+        //}
+    }
+
+    IEnumerator Kinematice()
+    {
+        yield return new WaitForSeconds(0.1f);
+        if (rb == null) yield break;
+
+        rb.isKinematic = true;
+    }
+
 }

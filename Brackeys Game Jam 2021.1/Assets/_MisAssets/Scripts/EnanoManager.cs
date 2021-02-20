@@ -10,6 +10,8 @@ public class EnanoManager : Singleton<EnanoManager>
 
     public JoinEnano joinEnano;
 
+    public Jump3D jump;
+
     private PlayerDirection direction = PlayerDirection.none;
 
 
@@ -17,11 +19,13 @@ public class EnanoManager : Singleton<EnanoManager>
 
     private Rigidbody rb;
 
-    private void Awake()
+
+    protected override void Awake()
     {
+        base.Awake();
         rb = GetComponent<Rigidbody>();
     }
-
+    
     private void Update()
     {
         if (nearEnanos.Count > 0)
@@ -58,8 +62,15 @@ public class EnanoManager : Singleton<EnanoManager>
         Enano mainEnano = MainEnano;
         enanos.Remove(mainEnano);
 
+        Vector3 pos = mainEnano.transform.position;
+
         mainEnano.transform.SetParent(null);
+
         mainEnano.EnableRigidBody();
+
+        StartCoroutine(mainEnano.KinematicCooldown(0.1f));
+
+        mainEnano.transform.position = pos;
         mainEnano.rb.isKinematic = false;
         mainEnano.rb.useGravity = true;
         mainEnano.rb.velocity = new Vector3(rb.velocity.x, -3f, 0);
@@ -74,7 +85,24 @@ public class EnanoManager : Singleton<EnanoManager>
     {
         enano.transform.SetParent(transform);
         enano.transform.SetAsFirstSibling();
+        foreach(Enano e in enanos)
+        {
+            e.transform.position = new Vector3(enano.transform.position.x, e.transform.position.y, e.transform.position.z);
+        }
         enanos.Insert(0, enano);
+
+        foreach(Enano e in enanos)
+        {
+            foreach (Collider c in e.GetComponentsInChildren<Collider>())
+            {
+                if(jump.touchingColliders.Contains(c))
+                {
+                    jump.touchingColliders.Remove(c);
+                }
+            }
+        }
+        
+
     }
 
     public PlayerDirection Direction

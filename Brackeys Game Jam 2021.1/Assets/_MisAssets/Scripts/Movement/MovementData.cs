@@ -17,7 +17,7 @@ public class MovementData : ScriptableObject
         {
             float curveTime = accelerationCurve[accelerationCurve.length - 1].time;
 
-            Debug.Log("CurveTime: " + curveTime);
+            //Debug.Log("CurveTime: " + curveTime);
 
             float mul = (1f / curveTime) * accelerationTime;
 

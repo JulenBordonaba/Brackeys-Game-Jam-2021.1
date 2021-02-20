@@ -6,7 +6,18 @@ using UnityEngine;
 public class Jump3D : Mechanic
 {
     #region fields
-    
+
+    private List<int> colliderNumbers = new List<int>();
+    public float inputSaveTime = 0.2f;
+
+    private float jumpCooldown = 0.1f;
+    private bool inCooldown = false;
+
+    private KeyCode nextKey;
+
+    protected float inputPassedTime = 0;
+
+    protected bool hasInput = false;
     #region Main Data
     //-------------------------------------------------------------------------
 
@@ -58,7 +69,8 @@ public class Jump3D : Mechanic
 
     private int currenteExtraJump = 0;
     private int currentChainJump = 0;
-    private List<Collider> touchingColliders = new List<Collider>();
+    [HideInInspector]
+    public List<Collider> touchingColliders = new List<Collider>();
 
     //-------------------------------------------------------------------------
     #endregion
@@ -98,21 +110,97 @@ public class Jump3D : Mechanic
 
     private void Update()
     {
+        InputTimeCount();
+        foreach(Collider c in touchingColliders)
+        {
+            print(c.name);
+        }
+        //DeleteColliders();
+        colliderNumbers = new List<int>();
         if (!allowed) return;
         HandleInput();
+
+        if (hasInput)
+        {
+            Jump();
+        }
+    }
+
+    public void SaveInput(KeyCode key)
+    {
+        hasInput = true;
+        nextKey = key;
+        inputPassedTime = 0;
+    }
+
+    /// <summary>
+    /// This function counts the time since the last input and it resets it if it excedes the time
+    /// </summary>
+    public void InputTimeCount()
+    {
+        if (!hasInput) return;
+
+        inputPassedTime += Time.deltaTime;
+
+        if (inputPassedTime >= inputSaveTime)
+        {
+            hasInput = false;
+        }
+    }
+
+    private void DeleteColliders()
+    {
+        List<int> noTouchCols = new List<int>();
+
+        for (int i = 0; i < touchingColliders.Count; i++)
+        {
+            if(!colliderNumbers.Contains(i))
+            {
+                noTouchCols.Add(i);
+            }
+        }
+
+        List<Collider> cols = new List<Collider>();
+        for (int i = 0; i < noTouchCols.Count; i++)
+        {
+            cols.Add(touchingColliders[noTouchCols[i]]);
+        }
+
+        for (int i = 0; i < cols.Count; i++)
+        {
+            touchingColliders.Remove(cols[i]);
+        }
     }
 
     public void HandleInput()
     {
         if (Input.GetKeyDown(CurrentJumpKey))
         {
-            Jump();
+            SaveInput(CurrentJumpKey);
         }
+    }
+
+    IEnumerator Cooldown(float t)
+    {
+        inCooldown = true;
+
+        yield return new WaitForSeconds(t);
+
+        inCooldown = false;
+    }
+
+    private void SetOnCooldown(float t)
+    {
+        StartCoroutine(Cooldown(t));
     }
 
     public void Jump()
     {
         if (!CanJump) return;
+
+        if (inCooldown) return;
+
+        SetOnCooldown(0.3f);
 
         if (InJump)
         {
@@ -146,7 +234,8 @@ public class Jump3D : Mechanic
         else
         {
             //we add the initial velocity to our rigidbody
-            AddVelocity(InitialVelocity);
+            SetVelocity(InitialVelocity);
+            hasInput = false;nextKey = KeyCode.None;
         }
     }
 
@@ -182,6 +271,7 @@ public class Jump3D : Mechanic
 
     private void FixedUpdate()
     {
+        print(InFloor);
         if (InJump)
         {
             print("Gravity");
@@ -459,6 +549,24 @@ public class Jump3D : Mechanic
             touchingColliders.Add(other);
         }
     }
+
+    //private void OnTriggerStay(Collider other)
+    //{
+    //    if (touchingColliders.Contains(other))
+    //    {
+    //        for (int i = 0; i < touchingColliders.Count; i++)
+    //        {
+    //            if(touchingColliders[i] == other)
+    //            {
+    //                if(!colliderNumbers.Contains(i))
+    //                {
+    //                    colliderNumbers.Add(i);
+    //                }
+    //                break;
+    //            }
+    //        }
+    //    }
+    //}
 
     private void OnTriggerExit(Collider other)
     {

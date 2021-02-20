@@ -18,8 +18,8 @@ public class RigidBodyData
     {
         if (rb == null) return;
         velocity = rb.velocity;
-        position = rb.position;
-        rotation = rb.rotation;
+        //position = rb.position;
+        //rotation = rb.rotation;
         constraints = rb.constraints;
         interpolation = rb.interpolation;
         collisionDetectionMode = rb.collisionDetectionMode;
@@ -30,8 +30,8 @@ public class RigidBodyData
     public Rigidbody SetData(Rigidbody rb)
     {
         rb.velocity = velocity;
-        rb.position = position;
-        rb.rotation = rotation;
+        //rb.position = position;
+        //rb.rotation = rotation;
         rb.constraints = constraints;
         rb.interpolation = interpolation;
         rb.collisionDetectionMode = collisionDetectionMode;

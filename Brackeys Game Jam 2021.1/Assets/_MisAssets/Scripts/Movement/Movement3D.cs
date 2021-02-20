@@ -146,7 +146,7 @@ public class Movement3D : Mechanic
         switch (movementState)
         {
             case MovementState.accelerating:
-                print(CurrentMovementData.AccelerationTimeMultiplier);
+                //print(CurrentMovementData.AccelerationTimeMultiplier);
                 Accelerate(CurrentMovementData.accelerationCurve, 1f / CurrentMovementData.AccelerationTimeMultiplier, CurrentMovementData.AccelerationVelocityMultiplier);
                 break;
             case MovementState.decelerating:

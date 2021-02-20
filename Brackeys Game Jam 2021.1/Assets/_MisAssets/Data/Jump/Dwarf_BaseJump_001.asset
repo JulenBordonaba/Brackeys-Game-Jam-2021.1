@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 497e3ea8f9f0c4b4384abd2fa3e0d732, type: 3}
   m_Name: Dwarf_BaseJump_001
   m_EditorClassIdentifier: 
-  dataType: 0
-  initialVelocity: 12
-  baseGravity: 24
-  keyReleaseGravity: 80
-  fallGravity: 40
-  maxHeight: 3
-  timeToMaxHeight: 0.5
+  dataType: 1
+  initialVelocity: 20
+  baseGravity: 66.666664
+  keyReleaseGravity: 150
+  fallGravity: 80
+  maxHeight: 3.0000002
+  timeToMaxHeight: 0.3
   overrideJumpKey: 0
   jumpKey: 0

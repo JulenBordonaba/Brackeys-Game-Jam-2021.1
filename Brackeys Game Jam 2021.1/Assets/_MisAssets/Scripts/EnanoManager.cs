@@ -6,10 +6,76 @@ public class EnanoManager : Singleton<EnanoManager>
 {
     public List<Enano> enanos = new List<Enano>();
 
+    public KeyCode joinKey;
+
+    public JoinEnano joinEnano;
+
     private PlayerDirection direction = PlayerDirection.none;
 
 
     public List<Enano> nearEnanos = new List<Enano>();
+
+    private Rigidbody rb;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
+
+    private void Update()
+    {
+        if (nearEnanos.Count > 0)
+        {
+            print("Mostrar Imágen de tecla para unirse");
+            List<Enano> aux = new List<Enano>();
+
+            foreach(Enano e in nearEnanos)
+            {
+                if(enanos.Contains(e))
+                {
+                    aux.Add(e);
+                }
+            }
+
+            if (aux.Count > 0)
+            {
+                foreach (Enano e in aux)
+                {
+                    nearEnanos.Remove(e);
+                }
+            }
+
+            if (Input.GetKeyDown(joinKey))
+            {
+                Join();
+            }
+        }
+
+    }
+
+    public void ThrowMainEnanoDown()
+    {
+        Enano mainEnano = MainEnano;
+        enanos.Remove(mainEnano);
+
+        mainEnano.transform.SetParent(null);
+        mainEnano.EnableRigidBody();
+        mainEnano.rb.isKinematic = false;
+        mainEnano.rb.useGravity = true;
+        mainEnano.rb.velocity = new Vector3(rb.velocity.x, -3f, 0);
+    }
+
+    private void Join()
+    {
+        joinEnano.Join(JoinEnano,MainEnano);
+    }
+
+    public void SetNewEnano(Enano enano)
+    {
+        enano.transform.SetParent(transform);
+        enano.transform.SetAsFirstSibling();
+        enanos.Insert(0, enano);
+    }
 
     public PlayerDirection Direction
     {
@@ -28,7 +94,7 @@ public class EnanoManager : Singleton<EnanoManager>
                 switch (direction)
                 {
                     case PlayerDirection.left:
-                        scale  = transform.localScale;
+                        scale = transform.localScale;
                         SetScale(new Vector3(Mathf.Abs(scale.x * -1), scale.y, scale.z));
                         break;
                     case PlayerDirection.right:
@@ -36,7 +102,7 @@ public class EnanoManager : Singleton<EnanoManager>
                         SetScale(new Vector3(Mathf.Abs(scale.x * 1), scale.y, scale.z));
                         break;
                     case PlayerDirection.none:
-                        
+
                         break;
                     default:
                         break;
@@ -109,6 +175,8 @@ public class EnanoManager : Singleton<EnanoManager>
 
     public List<Enano> GetNearEnanos(PlayerDirection dir)
     {
+        return nearEnanos;
+
         List<Enano> auxEnanos = new List<Enano>();
 
         foreach (Enano e in nearEnanos)
@@ -150,6 +218,7 @@ public class EnanoManager : Singleton<EnanoManager>
         Enano aux;
         if ((aux = other.gameObject.GetComponent<Enano>()) != null)
         {
+            if (enanos.Contains(aux)) return;
             if (!nearEnanos.Contains(aux))
             {
                 nearEnanos.Add(aux);

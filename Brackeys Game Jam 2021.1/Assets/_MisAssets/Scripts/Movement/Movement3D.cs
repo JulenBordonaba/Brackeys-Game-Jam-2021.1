@@ -6,8 +6,13 @@ using UnityEngine;
 public class Movement3D : Mechanic
 {
     public MovementData movementData;
-    
-    private Rigidbody rb;
+    public MovementData autoMovementData;
+
+    [HideInInspector]
+    public Rigidbody rb;
+
+    [HideInInspector]
+    public bool autoMove;
 
     private float curveTime = 0;
 
@@ -37,14 +42,22 @@ public class Movement3D : Mechanic
                 Debug.LogError("Error al cargar el Rigidbody");
             }
         }
-        
+
     }
 
     private void Update()
     {
-        HandleInput();
+        if (!allowed) return;
+
+        if (!autoMove)
+        {
+            HandleInput();
+        }
+
         CheckMovement();
+
     }
+    
 
     private void FixedUpdate()
     {
@@ -53,7 +66,7 @@ public class Movement3D : Mechanic
 
     private void ManageEnanoManager()
     {
-        if(lateralInput<0)
+        if (lateralInput < 0)
         {
             EnanoManager.Instance.Direction = PlayerDirection.left;
         }
@@ -96,14 +109,14 @@ public class Movement3D : Mechanic
     {
         movementState = MovementState.decelerating;
         float currentVelocity = Mathf.Abs(rb.velocity.x);
-        curveTime = GetTimeFromValue(movementData.decelerationCurve, currentVelocity);
+        curveTime = GetTimeFromValue(CurrentMovementData.decelerationCurve, currentVelocity);
     }
 
     private void StartAccelerating()
     {
         movementState = MovementState.accelerating;
         float currentVelocity = Mathf.Abs(rb.velocity.x);
-        curveTime = GetTimeFromValue(movementData.accelerationCurve, currentVelocity);
+        curveTime = GetTimeFromValue(CurrentMovementData.accelerationCurve, currentVelocity);
     }
 
     private void Accelerate(AnimationCurve curve, float timeMultiplier, float velMultiplier)
@@ -124,20 +137,20 @@ public class Movement3D : Mechanic
         Vector3 newVelocity = new Vector3(newVelX * dir, rb.velocity.y, rb.velocity.z);
         rb.velocity = newVelocity;
     }
-    
+
 
     private void ApplyMovement()
     {
         float currentVelocity = Mathf.Abs(rb.velocity.x);
 
-        switch(movementState)
+        switch (movementState)
         {
             case MovementState.accelerating:
-                print(movementData.AccelerationTimeMultiplier);
-                Accelerate(movementData.accelerationCurve, 1f/movementData.AccelerationTimeMultiplier, movementData.AccelerationVelocityMultiplier);
+                print(CurrentMovementData.AccelerationTimeMultiplier);
+                Accelerate(CurrentMovementData.accelerationCurve, 1f / CurrentMovementData.AccelerationTimeMultiplier, CurrentMovementData.AccelerationVelocityMultiplier);
                 break;
             case MovementState.decelerating:
-                Accelerate(movementData.decelerationCurve, 1f / movementData.DecelerationTimeMultiplier, movementData.DecelerationVelocityMultiplier);
+                Accelerate(CurrentMovementData.decelerationCurve, 1f / CurrentMovementData.DecelerationTimeMultiplier, CurrentMovementData.DecelerationVelocityMultiplier);
                 break;
             case MovementState.none:
                 break;
@@ -152,7 +165,7 @@ public class Movement3D : Mechanic
         int checksPerSecond = 50;
 
         float duration = curve[curve.length - 1].time;
-        
+
         int checks = Mathf.CeilToInt(duration * checksPerSecond);
 
         float currentTime = 0;
@@ -170,7 +183,7 @@ public class Movement3D : Mechanic
 
             if (currentDistance < errorRange)
             {
-                if(currentDistance<currentBestDistance)
+                if (currentDistance < currentBestDistance)
                 {
                     currentBestTime = currentTime;
                 }
@@ -187,6 +200,14 @@ public class Movement3D : Mechanic
         lateralInput = Input.GetAxisRaw("Horizontal");
     }
 
+    public MovementData CurrentMovementData
+    {
+        get
+        {
+            return autoMove ? autoMovementData : movementData;
+        }
+    }
+
 
     private bool AnyMovementInput
     {
@@ -201,6 +222,18 @@ public class Movement3D : Mechanic
         get
         {
             return lateralInput;
+        }
+    }
+
+    public float LateralInput
+    {
+        get
+        {
+            return lateralInput;
+        }
+        set
+        {
+            lateralInput = value;
         }
     }
 }

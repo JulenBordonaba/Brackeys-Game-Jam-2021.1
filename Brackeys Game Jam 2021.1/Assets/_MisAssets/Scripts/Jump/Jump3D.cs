@@ -6,7 +6,7 @@ using UnityEngine;
 public class Jump3D : Mechanic
 {
     #region fields
-
+    
     #region Main Data
     //-------------------------------------------------------------------------
 
@@ -98,6 +98,7 @@ public class Jump3D : Mechanic
 
     private void Update()
     {
+        if (!allowed) return;
         HandleInput();
     }
 
@@ -130,7 +131,13 @@ public class Jump3D : Mechanic
                 //Temporal
                 //--------------------------------
                 //we add the initial velocity to our rigidbody
-                SetVelocity(InitialVelocity);
+
+
+                if(EnanoManager.Instance.enanos.Count>1)
+                {
+                    ExtraEnanoJump();
+                }
+                
                 //--------------------------------
             }
 
@@ -141,6 +148,12 @@ public class Jump3D : Mechanic
             //we add the initial velocity to our rigidbody
             AddVelocity(InitialVelocity);
         }
+    }
+
+    private void ExtraEnanoJump()
+    {
+        SetVelocity(InitialVelocity);
+        EnanoManager.Instance.ThrowMainEnanoDown();
     }
 
     private void AddVelocity(float velocity)
@@ -186,6 +199,7 @@ public class Jump3D : Mechanic
 
 
         //we apply gravity
+
         rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y - Gravity * Time.fixedDeltaTime, rb.velocity.z);
 
     }
@@ -231,7 +245,7 @@ public class Jump3D : Mechanic
     {
         get
         {
-            return InFloor;
+            return InFloor || EnanoManager.Instance.enanos.Count>1;
         }
     }
 

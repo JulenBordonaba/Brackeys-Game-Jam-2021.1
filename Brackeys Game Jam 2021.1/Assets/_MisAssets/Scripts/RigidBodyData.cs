@@ -16,6 +16,7 @@ public class RigidBodyData
 
     public void SaveData(Rigidbody rb)
     {
+        if (rb == null) return;
         velocity = rb.velocity;
         position = rb.position;
         rotation = rb.rotation;

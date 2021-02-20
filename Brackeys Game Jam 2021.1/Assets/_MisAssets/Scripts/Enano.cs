@@ -6,6 +6,7 @@ public class Enano : MonoBehaviour
 {
     public RigidBodyData rbData;
 
+    public GameObject triggers;
 
     private Rigidbody _rb;
 
@@ -19,6 +20,21 @@ public class Enano : MonoBehaviour
 
     private void Update()
     {
+        if(this == EnanoManager.Instance.MainEnano)
+        {
+            if (!triggers.activeInHierarchy)
+            {
+                triggers.SetActive(true);
+            }
+        }
+        else
+        {
+            if (triggers.activeInHierarchy)
+            {
+                triggers.SetActive(false);
+            }
+        }
+
         if(RigidBodyEnabled)
         {
             if(rb==null)
@@ -42,19 +58,19 @@ public class Enano : MonoBehaviour
         //}
     }
 
-    private void EnableRigidBody()
+    public void EnableRigidBody()
     {
         Rigidbody aux = gameObject.AddComponent<Rigidbody>();
         aux = rbData.SetData(aux);
     }
 
-    private void DisableRigidBody()
+    public void DisableRigidBody()
     {
         rbData.SaveData(rb);
         Destroy(rb);
     }
 
-    private Rigidbody rb
+    public Rigidbody rb
     {
         get
         {
@@ -102,17 +118,18 @@ public class Enano : MonoBehaviour
 
     public void Join()
     {
-        rb.isKinematic = true;
+        DisableRigidBody();
+        
     }
 
     public void JumpDown()
     {
-        rb.isKinematic = false;
+        EnableRigidBody();
     }
 
     public void JumpUp()
     {
-        rb.isKinematic = false;
+        EnableRigidBody();
     }
 
     

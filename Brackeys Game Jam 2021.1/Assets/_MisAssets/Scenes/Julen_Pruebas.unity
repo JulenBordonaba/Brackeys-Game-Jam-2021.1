@@ -259,6 +259,7 @@ MonoBehaviour:
   dontDestroy: 0
   enanos:
   - {fileID: 735431287}
+  nearEnanos: []
 --- !u!4 &815667519
 Transform:
   m_ObjectHideFlags: 0
@@ -467,35 +468,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1496057578 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8623450576205689104, guid: f852a339a6c4d9043aa0350b1d6fb79c, type: 3}
-  m_PrefabInstance: {fileID: 1911647518}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1496057579
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1496057578}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87dcdbd663664f64b83c52feedc59100, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  allowed: 1
-  jumpData: {fileID: 11400000, guid: c76c87746bf8f2d42a30577a041ca8ee, type: 2}
-  jumpKey: 32
-  relativeSpace: 0
-  floorLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  allowExtraOptions: 0
-  allowExtraJumps: 0
-  extraJumps: []
-  allowChainJumps: 0
-  chainJumps: []
 --- !u!1001 &1911647518
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -551,18 +523,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8623450576205689196, guid: f852a339a6c4d9043aa0350b1d6fb79c, type: 3}
-      propertyPath: m_Constraints
-      value: 120
-      objectReference: {fileID: 0}
-    - target: {fileID: 8623450576386744917, guid: f852a339a6c4d9043aa0350b1d6fb79c, type: 3}
-      propertyPath: m_UseGravity
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8623450576386744917, guid: f852a339a6c4d9043aa0350b1d6fb79c, type: 3}
-      propertyPath: m_IsKinematic
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f852a339a6c4d9043aa0350b1d6fb79c, type: 3}
 --- !u!1001 &2562197759761655076
@@ -572,9 +532,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2562197759853734289, guid: cf674c60ae359564f81e1e8524a28e59, type: 3}
+      propertyPath: m_TagString
+      value: Floor
+      objectReference: {fileID: 0}
     - target: {fileID: 2562197760011330369, guid: cf674c60ae359564f81e1e8524a28e59, type: 3}
       propertyPath: m_Name
       value: Placa
+      objectReference: {fileID: 0}
+    - target: {fileID: 2562197760011330369, guid: cf674c60ae359564f81e1e8524a28e59, type: 3}
+      propertyPath: m_TagString
+      value: Floor
       objectReference: {fileID: 0}
     - target: {fileID: 2562197760011330370, guid: cf674c60ae359564f81e1e8524a28e59, type: 3}
       propertyPath: m_RootOrder
@@ -639,7 +607,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5404397095245639344, guid: 01f6f17b8f30426409dc19abec92d662, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5404397095245639344, guid: 01f6f17b8f30426409dc19abec92d662, type: 3}
       propertyPath: m_LocalPosition.z
@@ -678,8 +646,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5404397095245639348, guid: 01f6f17b8f30426409dc19abec92d662, type: 3}
+      propertyPath: m_Constraints
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 5404397095245639348, guid: 01f6f17b8f30426409dc19abec92d662, type: 3}
       propertyPath: m_IsKinematic
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5404397095245639354, guid: 01f6f17b8f30426409dc19abec92d662, type: 3}
       propertyPath: m_Name

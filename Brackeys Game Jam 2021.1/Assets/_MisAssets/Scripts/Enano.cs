@@ -2,24 +2,71 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
 public class Enano : MonoBehaviour
 {
+    public RigidBodyData rbData;
 
 
-    private List<Enano> nearEnanos = new List<Enano>();
-
-    private Rigidbody rb;
+    private Rigidbody _rb;
 
 
     private void Awake()
     {
+        rbData = new RigidBodyData();
         rb = GetComponent<Rigidbody>();
+        rbData.SaveData(rb);
     }
 
     private void Update()
     {
-        rb.isKinematic = IsKinematic;
+        if(RigidBodyEnabled)
+        {
+            if(rb==null)
+            {
+                EnableRigidBody();
+            }
+        }
+        else
+        {
+            if(rb!=null)
+            {
+                DisableRigidBody();
+            }
+        }
+
+        gameObject.tag = IsPlayer ? "Player" : "Floor";
+
+        //if(rb!=null)
+        //{
+        //    rb.isKinematic = IsAlone;
+        //}
+    }
+
+    private void EnableRigidBody()
+    {
+        Rigidbody aux = gameObject.AddComponent<Rigidbody>();
+        aux = rbData.SetData(aux);
+    }
+
+    private void DisableRigidBody()
+    {
+        rbData.SaveData(rb);
+        Destroy(rb);
+    }
+
+    private Rigidbody rb
+    {
+        get
+        {
+            if (_rb != null) return _rb;
+
+            return GetComponent<Rigidbody>();
+            
+        }
+        set
+        {
+            _rb = value;
+        }
     }
 
     public bool IsPlayer
@@ -42,12 +89,12 @@ public class Enano : MonoBehaviour
         }
     }
 
-    private bool IsKinematic
+    private bool RigidBodyEnabled
     {
         get
         {
 
-            if (IsAlone) return false;
+            if (IsPlayer) return false;
 
             return true;
         }
@@ -68,99 +115,5 @@ public class Enano : MonoBehaviour
         rb.isKinematic = false;
     }
 
-    public Enano JoinEnano
-    {
-        get
-        {
-            if (nearEnanos.Count <= 0) return null;
-
-            PlayerDirection dir = EnanoManager.Instance.Direction;
-
-            List<Enano> auxEnanos = GetNearEnanos(dir);
-
-            return NearestEnano(auxEnanos);
-            
-        }
-    }
-
-    public Enano NearestEnano(List<Enano> auxEnanos)
-    {
-        if (auxEnanos.Count <= 0) return null;
-        Enano nearestEnano = auxEnanos[0];
-        float nearestDist = Mathf.Infinity;
-
-        foreach(Enano e in auxEnanos)
-        {
-            float auxDist = Vector3.Distance(e.transform.position, nearestEnano.transform.position);
-            if (auxDist < nearestDist)
-            {
-                nearestEnano = e;
-                nearestDist = auxDist;
-            }
-        }
-
-        return nearestEnano;
-    }
-
-    public List<Enano> GetNearEnanos(PlayerDirection dir)
-    {
-        List<Enano> auxEnanos = new List<Enano>();
-
-        foreach (Enano e in nearEnanos)
-        {
-            switch (EnanoManager.Instance.Direction)
-            {
-                case PlayerDirection.left:
-                    
-                    if(e.transform.position.x<transform.position.x)
-                    {
-                        auxEnanos.Add(e);
-                    }
-
-                    break;
-                case PlayerDirection.right:
-
-                    if (e.transform.position.x > transform.position.x)
-                    {
-                        auxEnanos.Add(e);
-                    }
-                    break;
-                case PlayerDirection.none:
-                    return nearEnanos;
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        if (auxEnanos.Count <= 0) return nearEnanos;
-
-        return auxEnanos;
-    }
-
-
-
-    private void OnTriggerEnter(Collider other)
-    {
-        Enano aux;
-        if((aux = other.gameObject.GetComponent<Enano>()) != null)
-        {
-            if(!nearEnanos.Contains(aux))
-            {
-                nearEnanos.Add(aux);
-            }
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        Enano aux;
-        if ((aux = other.gameObject.GetComponent<Enano>()) != null)
-        {
-            if (nearEnanos.Contains(aux))
-            {
-                nearEnanos.Remove(aux);
-            }
-        }
-    }
+    
 }

@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Dwarf_BaseJump_002
   m_EditorClassIdentifier: 
   dataType: 1
-  initialVelocity: 10
-  baseGravity: 0
-  keyReleaseGravity: 0
-  fallGravity: 0
-  maxHeight: Infinity
-  timeToMaxHeight: Infinity
+  initialVelocity: 2
+  baseGravity: 1
+  keyReleaseGravity: 1
+  fallGravity: 1
+  maxHeight: 2
+  timeToMaxHeight: 2
   overrideJumpKey: 0
   jumpKey: 0

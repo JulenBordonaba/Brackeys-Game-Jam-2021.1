@@ -15,7 +15,7 @@ MonoBehaviour:
   dataType: 1
   initialVelocity: 12
   baseGravity: 24
-  keyReleaseGravity: 60
+  keyReleaseGravity: 80
   fallGravity: 40
   maxHeight: 3
   timeToMaxHeight: 0.5

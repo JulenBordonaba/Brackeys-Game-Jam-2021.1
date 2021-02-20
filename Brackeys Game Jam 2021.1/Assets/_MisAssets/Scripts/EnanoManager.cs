@@ -8,6 +8,9 @@ public class EnanoManager : Singleton<EnanoManager>
 
     private PlayerDirection direction = PlayerDirection.none;
 
+
+    public List<Enano> nearEnanos = new List<Enano>();
+
     public PlayerDirection Direction
     {
         get
@@ -67,6 +70,102 @@ public class EnanoManager : Singleton<EnanoManager>
         {
             if (enanos.Count <= 0) return null;
             return enanos[0];
+        }
+    }
+
+    public Enano JoinEnano
+    {
+        get
+        {
+            if (nearEnanos.Count <= 0) return null;
+
+            PlayerDirection dir = EnanoManager.Instance.Direction;
+
+            List<Enano> auxEnanos = GetNearEnanos(dir);
+
+            return NearestEnano(auxEnanos);
+
+        }
+    }
+
+    public Enano NearestEnano(List<Enano> auxEnanos)
+    {
+        if (auxEnanos.Count <= 0) return null;
+        Enano nearestEnano = auxEnanos[0];
+        float nearestDist = Mathf.Infinity;
+
+        foreach (Enano e in auxEnanos)
+        {
+            float auxDist = Vector3.Distance(e.transform.position, nearestEnano.transform.position);
+            if (auxDist < nearestDist)
+            {
+                nearestEnano = e;
+                nearestDist = auxDist;
+            }
+        }
+
+        return nearestEnano;
+    }
+
+    public List<Enano> GetNearEnanos(PlayerDirection dir)
+    {
+        List<Enano> auxEnanos = new List<Enano>();
+
+        foreach (Enano e in nearEnanos)
+        {
+            switch (EnanoManager.Instance.Direction)
+            {
+                case PlayerDirection.left:
+
+                    if (e.transform.position.x < transform.position.x)
+                    {
+                        auxEnanos.Add(e);
+                    }
+
+                    break;
+                case PlayerDirection.right:
+
+                    if (e.transform.position.x > transform.position.x)
+                    {
+                        auxEnanos.Add(e);
+                    }
+                    break;
+                case PlayerDirection.none:
+                    return nearEnanos;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        if (auxEnanos.Count <= 0) return nearEnanos;
+
+        return auxEnanos;
+    }
+
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Enano aux;
+        if ((aux = other.gameObject.GetComponent<Enano>()) != null)
+        {
+            if (!nearEnanos.Contains(aux))
+            {
+                nearEnanos.Add(aux);
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        Enano aux;
+        if ((aux = other.gameObject.GetComponent<Enano>()) != null)
+        {
+            if (nearEnanos.Contains(aux))
+            {
+                nearEnanos.Remove(aux);
+            }
         }
     }
 

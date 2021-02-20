@@ -171,6 +171,7 @@ public class Jump3D : Mechanic
     {
         if (InJump)
         {
+            print("Gravity");
             ApplyGravity();
         }
     }
@@ -258,7 +259,7 @@ public class Jump3D : Mechanic
                 }
                 else
                 {
-                    return jumpData.KeyReleaseGravity;
+                    return Mathf.Clamp(jumpData.KeyReleaseGravity, (-rb.velocity.y - 0.1f) / Time.fixedDeltaTime, (rb.velocity.y + 0.1f) / Time.fixedDeltaTime);
                 }
             }
         }
